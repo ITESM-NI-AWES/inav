@@ -3604,3 +3604,12 @@ void cliInit(const serialConfig_t *serialConfig)
 {
     UNUSED(serialConfig);
 }
+
+#ifdef USE_SERIAL_TEST_MESSAGE
+    void NOINLINE taskSerialTestMessage(timeUs_t currentTimeUs){
+        UNUSED(currentTimeUs);
+        if (cliMode) {
+            cliPrintLine("Hola, bola!\n");
+        }
+    }
+#endif

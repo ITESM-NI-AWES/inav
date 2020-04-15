@@ -119,6 +119,9 @@ typedef enum {
 #ifdef USE_RPM_FILTER
     TASK_RPM_FILTER,
 #endif
+#ifdef USE_SERIAL_TEST_MESSAGE
+    TASK_SERIAL_TEST_MESSAGE,
+#endif
     /* Count of real tasks */
     TASK_COUNT,
 
