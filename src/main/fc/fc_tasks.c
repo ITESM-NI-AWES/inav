@@ -347,6 +347,9 @@ void fcTasksInit(void)
 #ifdef USE_GLOBAL_FUNCTIONS
     setTaskEnabled(TASK_GLOBAL_FUNCTIONS, true);
 #endif
+#ifdef USE_GLOBAL_FUNCTIONS
+    setTaskEnabled(TASK_SERIAL_TEST_MESSAGE, true);
+#endif
 }
 
 cfTask_t cfTasks[TASK_COUNT] = {
@@ -573,6 +576,15 @@ cfTask_t cfTasks[TASK_COUNT] = {
         .taskName = "RPM",
         .taskFunc = rpmFilterUpdateTask,
         .desiredPeriod = TASK_PERIOD_HZ(RPM_FILTER_UPDATE_RATE_HZ),          // 300Hz @3,33ms
+        .staticPriority = TASK_PRIORITY_LOW,
+    },
+#endif
+
+#ifdef USE_SERIAL_TEST_MESSAGE
+    [TASK_SERIAL_TEST_MESSAGE] = {
+        .taskName = "SerialTestMessage",
+        .taskFunc = taskSerialTestMessage,
+        .desiredPeriod = TASK_PERIOD_HZ(1),          // 1Hz 
         .staticPriority = TASK_PRIORITY_LOW,
     },
 #endif
