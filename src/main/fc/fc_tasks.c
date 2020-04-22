@@ -347,7 +347,7 @@ void fcTasksInit(void)
 #ifdef USE_GLOBAL_FUNCTIONS
     setTaskEnabled(TASK_GLOBAL_FUNCTIONS, true);
 #endif
-#ifdef USE_GLOBAL_FUNCTIONS
+#ifdef USE_SERIAL_TEST_MESSAGE
     setTaskEnabled(TASK_SERIAL_TEST_MESSAGE, true);
 #endif
 }
