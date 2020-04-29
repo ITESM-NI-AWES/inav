@@ -143,6 +143,8 @@
 
 #include "uav_interconnect/uav_interconnect.h"
 
+#include "control/embededcodeexample1.h"
+
 #ifdef USE_HARDWARE_REVISION_DETECTION
 #include "hardware_revision.h"
 #endif
@@ -691,4 +693,7 @@ void init(void)
 #endif
 
     systemState |= SYSTEM_STATE_READY;
+#ifdef ENABLE_TEMPERATURE_EXPERIMENT
+    embededcodeexample1_initialize();
+#endif
 }

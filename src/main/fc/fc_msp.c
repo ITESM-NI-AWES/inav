@@ -112,6 +112,8 @@
 
 #include "telemetry/telemetry.h"
 
+ #include "control/embededcodeexample1.h"
+
 #ifdef USE_HARDWARE_REVISION_DETECTION
 #include "hardware_revision.h"
 #endif
@@ -902,7 +904,7 @@ static bool mspFcProcessOutCommand(uint16_t cmdMSP, sbuf_t *dst, mspPostProcessF
         break;
     
     case MSP2_INAV_CUSTOM_DATA_0:
-            sbufWriteU32(dst, 500);      // just writes the number 500 for testing purposes
+            sbufWriteU32(dst, rtY.Temperature);
         break;
 
     case MSP_UID:

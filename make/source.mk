@@ -164,6 +164,8 @@ COMMON_SRC = \
             cms/cms_menu_vtx_smartaudio.c \
             cms/cms_menu_vtx_tramp.c \
             cms/cms_menu_vtx_ffpv.c \
+            control/embededcodeexample1.c \
+            control/embededcodeexample1_data.c \
             drivers/display_ug2864hsweg01.c \
             drivers/rangefinder/rangefinder_hcsr04.c \
             drivers/rangefinder/rangefinder_hcsr04_i2c.c \

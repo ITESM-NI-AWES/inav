@@ -88,6 +88,8 @@
 
 #include "uav_interconnect/uav_interconnect.h"
 
+#include "control/embededcodeexample1.h"
+
 void taskHandleSerial(timeUs_t currentTimeUs)
 {
     UNUSED(currentTimeUs);
@@ -347,6 +349,9 @@ void fcTasksInit(void)
 #ifdef USE_GLOBAL_FUNCTIONS
     setTaskEnabled(TASK_GLOBAL_FUNCTIONS, true);
 #endif
+#ifdef ENABLE_TEMPERATURE_EXPERIMENT
+    setTaskEnabled(TASK_TEMPERATURE_EXPERIMENT, true);
+#endif
 }
 
 cfTask_t cfTasks[TASK_COUNT] = {
@@ -573,6 +578,14 @@ cfTask_t cfTasks[TASK_COUNT] = {
         .taskName = "RPM",
         .taskFunc = rpmFilterUpdateTask,
         .desiredPeriod = TASK_PERIOD_HZ(RPM_FILTER_UPDATE_RATE_HZ),          // 300Hz @3,33ms
+        .staticPriority = TASK_PRIORITY_LOW,
+    },
+#endif
+#ifdef ENABLE_TEMPERATURE_EXPERIMENT
+    [TASK_TEMPERATURE_EXPERIMENT] = {
+        .taskName = "TemperatureExperiment",
+        .taskFunc = embededcodeexample1_step,
+        .desiredPeriod = TASK_PERIOD_HZ(5),
         .staticPriority = TASK_PRIORITY_LOW,
     },
 #endif
