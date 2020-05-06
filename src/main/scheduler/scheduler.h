@@ -119,8 +119,8 @@ typedef enum {
 #ifdef USE_RPM_FILTER
     TASK_RPM_FILTER,
 #endif
-#ifdef ENABLE_TEMPERATURE_EXPERIMENT
-    TASK_TEMPERATURE_EXPERIMENT,
+#ifdef ENABLE_3DOF_EXPERIMENT
+    TASK_3DOF_EXPERIMENT,
 #endif
     /* Count of real tasks */
     TASK_COUNT,

@@ -112,7 +112,7 @@
 
 #include "telemetry/telemetry.h"
 
- #include "control/embededcodeexample1.h"
+ #include "control/FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep.h"
 
 #ifdef USE_HARDWARE_REVISION_DETECTION
 #include "hardware_revision.h"
@@ -903,8 +903,15 @@ static bool mspFcProcessOutCommand(uint16_t cmdMSP, sbuf_t *dst, mspPostProcessF
         }
         break;
     
-    case MSP2_INAV_CUSTOM_DATA_0:
-            sbufWriteU32(dst, rtY.Temperature);
+    case MSP2_INAV_CUSTOM_DATA:  //sends 8 32-bit values to buffer
+            sbufWriteU32(dst, lrintf((float)FinWing_55_AWES_Drone_Reel_Ou_Y.Altitude));
+            sbufWriteU32(dst, lrintf((float)FinWing_55_AWES_Drone_Reel_Ou_U.ElevonPitch));
+            sbufWriteU32(dst, 0);
+            sbufWriteU32(dst, 0);
+            sbufWriteU32(dst, 0);
+            sbufWriteU32(dst, 0);
+            sbufWriteU32(dst, 0);
+            sbufWriteU32(dst, 0);
         break;
 
     case MSP_UID:

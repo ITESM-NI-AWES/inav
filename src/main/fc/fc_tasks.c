@@ -88,7 +88,7 @@
 
 #include "uav_interconnect/uav_interconnect.h"
 
-#include "control/embededcodeexample1.h"
+#include "control/FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep.h"
 
 void taskHandleSerial(timeUs_t currentTimeUs)
 {
@@ -349,8 +349,8 @@ void fcTasksInit(void)
 #ifdef USE_GLOBAL_FUNCTIONS
     setTaskEnabled(TASK_GLOBAL_FUNCTIONS, true);
 #endif
-#ifdef ENABLE_TEMPERATURE_EXPERIMENT
-    setTaskEnabled(TASK_TEMPERATURE_EXPERIMENT, true);
+#ifdef ENABLE_3DOF_EXPERIMENT
+    setTaskEnabled(TASK_3DOF_EXPERIMENT, true);
 #endif
 }
 
@@ -581,12 +581,12 @@ cfTask_t cfTasks[TASK_COUNT] = {
         .staticPriority = TASK_PRIORITY_LOW,
     },
 #endif
-#ifdef ENABLE_TEMPERATURE_EXPERIMENT
-    [TASK_TEMPERATURE_EXPERIMENT] = {
-        .taskName = "TemperatureExperiment",
-        .taskFunc = embededcodeexample1_step,
-        .desiredPeriod = TASK_PERIOD_HZ(5),
-        .staticPriority = TASK_PRIORITY_LOW,
+#ifdef ENABLE_3DOF_EXPERIMENT
+    [TASK_3DOF_EXPERIMENT] = {
+        .taskName = "3DOFexperiment",
+        .taskFunc = FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step,
+        .desiredPeriod = TASK_PERIOD_HZ(1000),
+        .staticPriority = TASK_PRIORITY_HIGH,
     },
 #endif
 };

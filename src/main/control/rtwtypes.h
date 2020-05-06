@@ -1,4 +1,3 @@
-
 /*
  * Academic License - for use in teaching, academic research, and meeting
  * course requirements at degree granting institutions only.  Not for
@@ -6,11 +5,16 @@
  *
  * File: rtwtypes.h
  *
- * Code generated for Simulink model 'embededcodeexample1'.
+ * Code generated for Simulink model 'FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep'.
  *
- * Model version                  : 1.9
+ * Model version                  : 1.155
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Wed Apr 22 17:58:31 2020
+ * C/C++ source code generated on : Tue May  5 13:04:57 2020
+ *
+ * Target selection: ert.tlc
+ * Embedded hardware selection: Intel->x86-64 (Windows64)
+ * Code generation objectives: Unspecified
+ * Validation result: Not run
  */
 
 #ifndef RTWTYPES_H
@@ -29,10 +33,10 @@
 
 /*=======================================================================*
  * Target hardware information
- *   Device type: ARM Compatible->ARM Cortex
+ *   Device type: Intel->x86-64 (Windows64)
  *   Number of bits:     char:   8    short:   16    int:  32
  *                       long:  32
- *                       native word size:  32
+ *                       native word size:  64
  *   Byte ordering: LittleEndian
  *   Signed integer division rounds to: Zero
  *   Shift right on a signed integer as arithmetic shift: on
@@ -67,6 +71,68 @@ typedef char char_T;
 typedef unsigned char uchar_T;
 typedef char_T byte_T;
 
+/*===========================================================================*
+ * Complex number type definitions                                           *
+ *===========================================================================*/
+#define CREAL_T
+
+typedef struct {
+  real32_T re;
+  real32_T im;
+} creal32_T;
+
+typedef struct {
+  real64_T re;
+  real64_T im;
+} creal64_T;
+
+typedef struct {
+  real_T re;
+  real_T im;
+} creal_T;
+
+#define CINT8_T
+
+typedef struct {
+  int8_T re;
+  int8_T im;
+} cint8_T;
+
+#define CUINT8_T
+
+typedef struct {
+  uint8_T re;
+  uint8_T im;
+} cuint8_T;
+
+#define CINT16_T
+
+typedef struct {
+  int16_T re;
+  int16_T im;
+} cint16_T;
+
+#define CUINT16_T
+
+typedef struct {
+  uint16_T re;
+  uint16_T im;
+} cuint16_T;
+
+#define CINT32_T
+
+typedef struct {
+  int32_T re;
+  int32_T im;
+} cint32_T;
+
+#define CUINT32_T
+
+typedef struct {
+  uint32_T re;
+  uint32_T im;
+} cuint32_T;
+
 /*=======================================================================*
  * Min and Max:                                                          *
  *   int8_T, int16_T, int32_T     - signed 8, 16, or 32 bit integers     *
@@ -92,4 +158,3 @@ typedef void * pointer_T;
  *
  * [EOF]
  */
-
