@@ -112,7 +112,7 @@
 
 #include "telemetry/telemetry.h"
 
- #include "control/FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep.h"
+ #include "control/Airframe_6DOF_v001.h"
 
 #ifdef USE_HARDWARE_REVISION_DETECTION
 #include "hardware_revision.h"
@@ -904,12 +904,12 @@ static bool mspFcProcessOutCommand(uint16_t cmdMSP, sbuf_t *dst, mspPostProcessF
         break;
     
     case MSP2_INAV_CUSTOM_DATA:  //sends 8 32-bit values to buffer
-            sbufWriteU32(dst, lrintf((float)FinWing_55_AWES_Drone_Reel_Ou_Y.Altitude));
-            sbufWriteU32(dst, lrintf((float)FinWing_55_AWES_Drone_Reel_Ou_U.ElevonPitch));
-            sbufWriteU32(dst, 0);
-            sbufWriteU32(dst, 0);
-            sbufWriteU32(dst, 0);
-            sbufWriteU32(dst, 0);
+            sbufWriteU32(dst, lrintf((float)Airframe_6DOF_v001_Y.StatesOut[0]));
+            sbufWriteU32(dst, lrintf((float)Airframe_6DOF_v001_Y.StatesOut[9]));
+            sbufWriteU32(dst, lrintf((float)Airframe_6DOF_v001_Y.StatesOut[1]));
+            sbufWriteU32(dst, lrintf((float)Airframe_6DOF_v001_Y.StatesOut[3]));
+            sbufWriteU32(dst, lrintf((float)Airframe_6DOF_v001_Y.StatesOut[12]));
+            sbufWriteU32(dst, lrintf((float)Airframe_6DOF_v001_Y.StatesOut[4]));
             sbufWriteU32(dst, 0);
             sbufWriteU32(dst, 0);
         break;

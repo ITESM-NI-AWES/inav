@@ -1,5 +1,5 @@
 /*
- * rtGetNaN.h
+ * Airframe_6DOF_v001_types.h
  *
  * Trial License - for use to evaluate programs for possible purchase as
  * an end-user only.
@@ -17,13 +17,12 @@
  * Validation result: Not run
  */
 
-#ifndef RTW_HEADER_rtGetNaN_h_
-#define RTW_HEADER_rtGetNaN_h_
-#include <stddef.h>
-#include "rtwtypes.h"
-#include "rt_nonfinite.h"
+#ifndef RTW_HEADER_Airframe_6DOF_v001_types_h_
+#define RTW_HEADER_Airframe_6DOF_v001_types_h_
 
-extern real_T rtGetNaN(void);
-extern real32_T rtGetNaNF(void);
+/* Model Code Variants */
 
-#endif                                 /* RTW_HEADER_rtGetNaN_h_ */
+/* Forward declaration for rtModel */
+typedef struct tag_RTM_Airframe_6DOF_v001_T RT_MODEL_Airframe_6DOF_v001_T;
+
+#endif                              /* RTW_HEADER_Airframe_6DOF_v001_types_h_ */

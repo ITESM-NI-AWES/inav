@@ -1,19 +1,19 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
+ * rt_nonfinite.c
  *
- * File: rt_nonfinite.c
+ * Trial License - for use to evaluate programs for possible purchase as
+ * an end-user only.
  *
- * Code generated for Simulink model 'FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep'.
+ * Code generation for model "Airframe_6DOF_v001".
  *
- * Model version                  : 1.155
- * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Tue May  5 13:04:57 2020
+ * Model version              : 1.0
+ * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
+ * C source code generated on : Wed Apr 29 23:00:24 2020
  *
- * Target selection: ert.tlc
- * Embedded hardware selection: Intel->x86-64 (Windows64)
- * Code generation objectives: Unspecified
+ * Target selection: grt.tlc
+ * Note: GRT includes extra infrastructure and instrumentation for prototyping
+ * Embedded hardware selection: ARM Compatible->ARM Cortex
+ * Code generation objective: Execution efficiency
  * Validation result: Not run
  */
 
@@ -91,9 +91,3 @@ boolean_T rtIsNaNF(real32_T value)
   return (boolean_T)( (tmp.wordL.wordLuint & 0x7F800000) == 0x7F800000 &&
                      (tmp.wordL.wordLuint & 0x007FFFFF) != 0 );
 }
-
-/*
- * File trailer for generated code.
- *
- * [EOF]
- */

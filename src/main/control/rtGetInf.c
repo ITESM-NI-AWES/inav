@@ -1,19 +1,19 @@
 /*
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
+ * rtGetInf.c
  *
- * File: rtGetInf.c
+ * Trial License - for use to evaluate programs for possible purchase as
+ * an end-user only.
  *
- * Code generated for Simulink model 'FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep'.
+ * Code generation for model "Airframe_6DOF_v001".
  *
- * Model version                  : 1.155
- * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Tue May  5 13:04:57 2020
+ * Model version              : 1.0
+ * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
+ * C source code generated on : Wed Apr 29 23:00:24 2020
  *
- * Target selection: ert.tlc
- * Embedded hardware selection: Intel->x86-64 (Windows64)
- * Code generation objectives: Unspecified
+ * Target selection: grt.tlc
+ * Note: GRT includes extra infrastructure and instrumentation for prototyping
+ * Embedded hardware selection: ARM Compatible->ARM Cortex
+ * Code generation objective: Execution efficiency
  * Validation result: Not run
  */
 
@@ -35,14 +35,38 @@ real_T rtGetInf(void)
   if (bitsPerReal == 32U) {
     inf = rtGetInfF();
   } else {
-    union {
-      LittleEndianIEEEDouble bitVal;
-      real_T fltVal;
-    } tmpVal;
+    uint16_T one = 1U;
+    enum {
+      LittleEndian,
+      BigEndian
+    } machByteOrder = (*((uint8_T *) &one) == 1U) ? LittleEndian : BigEndian;
+    switch (machByteOrder) {
+     case LittleEndian:
+      {
+        union {
+          LittleEndianIEEEDouble bitVal;
+          real_T fltVal;
+        } tmpVal;
 
-    tmpVal.bitVal.words.wordH = 0x7FF00000U;
-    tmpVal.bitVal.words.wordL = 0x00000000U;
-    inf = tmpVal.fltVal;
+        tmpVal.bitVal.words.wordH = 0x7FF00000U;
+        tmpVal.bitVal.words.wordL = 0x00000000U;
+        inf = tmpVal.fltVal;
+        break;
+      }
+
+     case BigEndian:
+      {
+        union {
+          BigEndianIEEEDouble bitVal;
+          real_T fltVal;
+        } tmpVal;
+
+        tmpVal.bitVal.words.wordH = 0x7FF00000U;
+        tmpVal.bitVal.words.wordL = 0x00000000U;
+        inf = tmpVal.fltVal;
+        break;
+      }
+    }
   }
 
   return inf;
@@ -70,14 +94,38 @@ real_T rtGetMinusInf(void)
   if (bitsPerReal == 32U) {
     minf = rtGetMinusInfF();
   } else {
-    union {
-      LittleEndianIEEEDouble bitVal;
-      real_T fltVal;
-    } tmpVal;
+    uint16_T one = 1U;
+    enum {
+      LittleEndian,
+      BigEndian
+    } machByteOrder = (*((uint8_T *) &one) == 1U) ? LittleEndian : BigEndian;
+    switch (machByteOrder) {
+     case LittleEndian:
+      {
+        union {
+          LittleEndianIEEEDouble bitVal;
+          real_T fltVal;
+        } tmpVal;
 
-    tmpVal.bitVal.words.wordH = 0xFFF00000U;
-    tmpVal.bitVal.words.wordL = 0x00000000U;
-    minf = tmpVal.fltVal;
+        tmpVal.bitVal.words.wordH = 0xFFF00000U;
+        tmpVal.bitVal.words.wordL = 0x00000000U;
+        minf = tmpVal.fltVal;
+        break;
+      }
+
+     case BigEndian:
+      {
+        union {
+          BigEndianIEEEDouble bitVal;
+          real_T fltVal;
+        } tmpVal;
+
+        tmpVal.bitVal.words.wordH = 0xFFF00000U;
+        tmpVal.bitVal.words.wordL = 0x00000000U;
+        minf = tmpVal.fltVal;
+        break;
+      }
+    }
   }
 
   return minf;
@@ -93,9 +141,3 @@ real32_T rtGetMinusInfF(void)
   minfF.wordL.wordLuint = 0xFF800000U;
   return minfF.wordL.wordLreal;
 }
-
-/*
- * File trailer for generated code.
- *
- * [EOF]
- */

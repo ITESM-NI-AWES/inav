@@ -88,7 +88,7 @@
 
 #include "uav_interconnect/uav_interconnect.h"
 
-#include "control/FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep.h"
+#include "control/Airframe_6DOF_v001.h"
 
 void taskHandleSerial(timeUs_t currentTimeUs)
 {
@@ -349,8 +349,8 @@ void fcTasksInit(void)
 #ifdef USE_GLOBAL_FUNCTIONS
     setTaskEnabled(TASK_GLOBAL_FUNCTIONS, true);
 #endif
-#ifdef ENABLE_3DOF_EXPERIMENT
-    setTaskEnabled(TASK_3DOF_EXPERIMENT, true);
+#ifdef ENABLE_6DOF_EXPERIMENT
+    setTaskEnabled(TASK_6DOF_EXPERIMENT, true);
 #endif
 }
 
@@ -581,10 +581,10 @@ cfTask_t cfTasks[TASK_COUNT] = {
         .staticPriority = TASK_PRIORITY_LOW,
     },
 #endif
-#ifdef ENABLE_3DOF_EXPERIMENT
-    [TASK_3DOF_EXPERIMENT] = {
-        .taskName = "3DOFexperiment",
-        .taskFunc = FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step,
+#ifdef ENABLE_6DOF_EXPERIMENT
+    [TASK_6DOF_EXPERIMENT] = {
+        .taskName = "6DOFexperiment",
+        .taskFunc = Airframe_6DOF_v001_step,
         .desiredPeriod = TASK_PERIOD_HZ(1000),
         .staticPriority = TASK_PRIORITY_HIGH,
     },

@@ -143,7 +143,7 @@
 
 #include "uav_interconnect/uav_interconnect.h"
 
-#include "control/FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep.h"
+#include "control/Airframe_6DOF_v001.h"
 
 #ifdef USE_HARDWARE_REVISION_DETECTION
 #include "hardware_revision.h"
@@ -693,7 +693,7 @@ void init(void)
 #endif
 
     systemState |= SYSTEM_STATE_READY;
-#ifdef ENABLE_3DOF_EXPERIMENT
-    FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_initialize();
+#ifdef ENABLE_6DOF_EXPERIMENT
+    Airframe_6DOF_v001_initialize();
 #endif
 }

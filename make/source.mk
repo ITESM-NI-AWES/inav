@@ -164,8 +164,8 @@ COMMON_SRC = \
             cms/cms_menu_vtx_smartaudio.c \
             cms/cms_menu_vtx_tramp.c \
             cms/cms_menu_vtx_ffpv.c \
-            control/FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep.c \
-            control/FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_data.c \
+            control/Airframe_6DOF_v001.c \
+            control/Airframe_6DOF_v001_data.c \
             control/rt_nonfinite.c \
             control/rtGetInf.c \
             control/rtGetNaN.c \

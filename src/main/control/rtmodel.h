@@ -1,5 +1,5 @@
 /*
- * rtGetNaN.h
+ *  rtmodel.h:
  *
  * Trial License - for use to evaluate programs for possible purchase as
  * an end-user only.
@@ -17,13 +17,12 @@
  * Validation result: Not run
  */
 
-#ifndef RTW_HEADER_rtGetNaN_h_
-#define RTW_HEADER_rtGetNaN_h_
-#include <stddef.h>
-#include "rtwtypes.h"
-#include "rt_nonfinite.h"
+#ifndef RTW_HEADER_rtmodel_h_
+#define RTW_HEADER_rtmodel_h_
 
-extern real_T rtGetNaN(void);
-extern real32_T rtGetNaNF(void);
-
-#endif                                 /* RTW_HEADER_rtGetNaN_h_ */
+/*
+ *  Includes the appropriate headers when we are using rtModel
+ */
+#include "Airframe_6DOF_v001.h"
+#define GRTINTERFACE                   0
+#endif                                 /* RTW_HEADER_rtmodel_h_ */
