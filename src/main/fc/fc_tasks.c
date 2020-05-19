@@ -90,6 +90,39 @@
 
 #include "control/FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep.h"
 
+void rt_OneStep(timeUs_t currentTimeUs);
+void rt_OneStep(timeUs_t currentTimeUs)
+{
+    UNUSED(currentTimeUs);
+  static boolean_T OverrunFlag = false;
+
+  /* Disable interrupts here */
+
+  /* Check for overrun */
+  if (OverrunFlag) {
+    rtmSetErrorStatus(FinWing_55_AWES_Drone_Reel_O_M, "Overrun");
+    return;
+  }
+
+  OverrunFlag = true;
+
+  /* Save FPU context here (if necessary) */
+  /* Re-enable timer or interrupt here */
+  /* Set model inputs here */
+
+  /* Step the model for base rate */
+  FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step();
+
+  /* Get model outputs here */
+
+  /* Indicate task complete */
+  OverrunFlag = false;
+
+  /* Disable interrupts here */
+  /* Restore FPU context here (if necessary) */
+  /* Enable interrupts here */
+}
+
 void taskHandleSerial(timeUs_t currentTimeUs)
 {
     UNUSED(currentTimeUs);
@@ -584,9 +617,9 @@ cfTask_t cfTasks[TASK_COUNT] = {
 #ifdef ENABLE_3DOF_EXPERIMENT
     [TASK_3DOF_EXPERIMENT] = {
         .taskName = "3DOFexperiment",
-        .taskFunc = FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step,
+        .taskFunc = rt_OneStep,
         .desiredPeriod = TASK_PERIOD_HZ(1000),
-        .staticPriority = TASK_PRIORITY_HIGH,
+        .staticPriority = TASK_PRIORITY_LOW,
     },
 #endif
 };

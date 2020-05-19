@@ -19,8 +19,8 @@
 
 #include "FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep.h"
 #include "FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_private.h"
-#include "common/time.h"
 #include "flight/imu.h"
+uint32_t stepNumber;
 /* Block signals (default storage) */
 B_FinWing_55_AWES_Drone_Reel__T FinWing_55_AWES_Drone_Reel_Ou_B;
 
@@ -253,7 +253,7 @@ static void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 
   rtsiSetT(si, t + h*rt_ODE3_A[0]);
   rtsiSetdX(si, f1);
-  FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step(0);
+  FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step();
   FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_derivatives();
 
   /* f(:,3) = feval(odefile, t + hA(2), y + f*hB(:,2), args(:)(*)); */
@@ -267,7 +267,7 @@ static void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 
   rtsiSetT(si, t + h*rt_ODE3_A[1]);
   rtsiSetdX(si, f2);
-  FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step(0);
+  FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step();
   FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_derivatives();
 
   /* tnew = t + hA(3);
@@ -323,7 +323,7 @@ real_T rt_atan2d_snf(real_T u0, real_T u1)
 }
 
 /* Model step function */
-void FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step(timeUs_t currentTimeUs)
+void FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step()
 {
   real_T rtb_Va;
   real_T rtb_Atan;
@@ -347,6 +347,12 @@ void FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step(timeUs_t currentT
   real_T rtb_Transpose_0[9];
   real_T rtb_Transpose_tmp;
   real_T rtb_sincos_o2_tmp;
+  stepNumber ++;
+  if (stepNumber >20000){
+  if (rtmIsMajorTimeStep(FinWing_55_AWES_Drone_Reel_O_M)) {
+    FinWing_55_AWES_Drone_Reel_Ou_U.ElevonPitch = 0;
+    //FinWing_55_AWES_Drone_Reel_Ou_U.ElevonPitch = (double) (attitude.values.pitch / 10) ;
+  }
   if (rtmIsMajorTimeStep(FinWing_55_AWES_Drone_Reel_O_M)) {
     /* set solver stop time */
     rtsiSetSolverStopTime(&FinWing_55_AWES_Drone_Reel_O_M->solverInfo,
@@ -552,17 +558,14 @@ void FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step(timeUs_t currentT
    */
   bpIndex[0] = plook_s32dd_binx(rtb_UnaryMinus,
     FinWing_55_AWES_Drone_Re_ConstP.pooled3, 9U, &rtb_UnaryMinus);
-
+  
   /* Gain: '<S5>/Gain1' incorporates:
    *  Inport: '<Root>/ElevonPitch'
    */
   /* Unit Conversion - from: rad to: deg
      Expression: output = (57.2958*input) + (0) */
-  FinWing_55_AWES_Drone_Reel_Ou_U.ElevonPitch = (double) attitude.values.pitch ;
-  
-  rtb_CM_el = 0.017453292519943295 * (FinWing_55_AWES_Drone_Reel_Ou_U.ElevonPitch / 10.0);
-
   /* Saturate: '<Root>/Saturation1' */
+  rtb_CM_el = 0.017453292519943295 * FinWing_55_AWES_Drone_Reel_Ou_U.ElevonPitch;
   if (rtb_CM_el > 0.35) {
     rtb_CM_el = 0.35;
   } else {
@@ -796,6 +799,7 @@ void FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step(timeUs_t currentT
       FinWing_55_AWES_Drone_Reel_O_M->Timing.clockTick1++;
     }
   }                                    /* end MajorTimeStep */
+  }
 }
 
 /* Derivatives for root system: '<Root>' */
@@ -829,6 +833,7 @@ void FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_derivatives(void)
 /* Model initialize function */
 void FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_initialize(void)
 {
+  stepNumber = 0;
   /* Registration code */
 
   /* initialize non-finites */

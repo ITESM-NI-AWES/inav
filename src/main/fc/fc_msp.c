@@ -904,9 +904,11 @@ static bool mspFcProcessOutCommand(uint16_t cmdMSP, sbuf_t *dst, mspPostProcessF
         break;
     
     case MSP2_INAV_CUSTOM_DATA:  //sends 8 32-bit values to buffer
-            sbufWriteU32(dst, lrintf((float)FinWing_55_AWES_Drone_Reel_Ou_Y.Altitude));
-            sbufWriteU32(dst, lrintf((float)FinWing_55_AWES_Drone_Reel_Ou_U.ElevonPitch));
-            sbufWriteU32(dst, 0);
+            //sbufWriteU32(dst, lrintf((float)FinWing_55_AWES_Drone_Reel_Ou_Y.Altitude));
+            //sbufWriteU32(dst, lrintf((float)FinWing_55_AWES_Drone_Reel_Ou_U.ElevonPitch));
+            sbufWriteU32(dst, lrintf((float)(FinWing_55_AWES_Drone_Reel_Ou_Y.Altitude * 100)));
+            sbufWriteU32(dst, lrintf((float)(FinWing_55_AWES_Drone_Reel_Ou_U.ElevonPitch * 100)));
+            sbufWriteU32(dst, stepNumber);
             sbufWriteU32(dst, 0);
             sbufWriteU32(dst, 0);
             sbufWriteU32(dst, 0);

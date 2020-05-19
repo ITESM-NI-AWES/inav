@@ -62,7 +62,7 @@
 #ifndef rtmGetTPtr
 # define rtmGetTPtr(rtm)               ((rtm)->Timing.t)
 #endif
-
+extern uint32_t stepNumber;
 /* Block signals (default storage) */
 typedef struct {
   real_T q;                            /* '<S13>/q' */
@@ -247,7 +247,7 @@ extern const ConstP_FinWing_55_AWES_Drone__T FinWing_55_AWES_Drone_Re_ConstP;
 
 /* Model entry point functions */
 extern void FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_initialize(void);
-extern void FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step(timeUs_t currentTimeUs);
+extern void FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step(void);
 extern void FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_terminate(void);
 
 /* Real-time Model object */
