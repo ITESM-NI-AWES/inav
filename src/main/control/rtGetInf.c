@@ -5,15 +5,15 @@
  *
  * File: rtGetInf.c
  *
- * Code generated for Simulink model 'FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep'.
+ * Code generated for Simulink model 'PartialImplemAWES3DOF_P1_A'.
  *
- * Model version                  : 1.155
+ * Model version                  : 1.154
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Tue May  5 13:04:57 2020
+ * C/C++ source code generated on : Fri May 22 17:37:58 2020
  *
  * Target selection: ert.tlc
- * Embedded hardware selection: Intel->x86-64 (Windows64)
- * Code generation objectives: Unspecified
+ * Embedded hardware selection: ARM Compatible->ARM Cortex
+ * Code generation objective: Execution efficiency
  * Validation result: Not run
  */
 

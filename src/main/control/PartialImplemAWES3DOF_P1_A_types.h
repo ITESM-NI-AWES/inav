@@ -3,7 +3,7 @@
  * course requirements at degree granting institutions only.  Not for
  * government, commercial, or other organizational use.
  *
- * File: rtGetNaN.h
+ * File: PartialImplemAWES3DOF_P1_A_types.h
  *
  * Code generated for Simulink model 'PartialImplemAWES3DOF_P1_A'.
  *
@@ -17,16 +17,15 @@
  * Validation result: Not run
  */
 
-#ifndef RTW_HEADER_rtGetNaN_h_
-#define RTW_HEADER_rtGetNaN_h_
-#include <stddef.h>
-#include "rtwtypes.h"
-#include "rt_nonfinite.h"
+#ifndef RTW_HEADER_PartialImplemAWES3DOF_P1_A_types_h_
+#define RTW_HEADER_PartialImplemAWES3DOF_P1_A_types_h_
 
-extern real_T rtGetNaN(void);
-extern real32_T rtGetNaNF(void);
+/* Model Code Variants */
 
-#endif                                 /* RTW_HEADER_rtGetNaN_h_ */
+/* Forward declaration for rtModel */
+typedef struct tag_RTM_PartialImplemAWES3DOF_T RT_MODEL_PartialImplemAWES3DO_T;
+
+#endif                      /* RTW_HEADER_PartialImplemAWES3DOF_P1_A_types_h_ */
 
 /*
  * File trailer for generated code.
