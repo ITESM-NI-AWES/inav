@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'PartialImplemAWES3DOF_P1_A'.
  *
- * Model version                  : 1.154
+ * Model version                  : 1.156
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Fri May 22 17:37:58 2020
+ * C/C++ source code generated on : Fri May 22 18:47:53 2020
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex

@@ -63,6 +63,7 @@
 #include "fc/rc_modes.h"
 #include "fc/runtime_config.h"
 #include "fc/settings.h"
+#include "fc/fc_tasks.h"
 
 #include "flight/failsafe.h"
 #include "flight/imu.h"
@@ -112,7 +113,7 @@
 
 #include "telemetry/telemetry.h"
 
- #include "control/FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep.h"
+ #include "control/PartialImplemAWES3DOF_P1_A.h"
 
 #ifdef USE_HARDWARE_REVISION_DETECTION
 #include "hardware_revision.h"
@@ -906,8 +907,8 @@ static bool mspFcProcessOutCommand(uint16_t cmdMSP, sbuf_t *dst, mspPostProcessF
     case MSP2_INAV_CUSTOM_DATA:  //sends 8 32-bit values to buffer
             //sbufWriteU32(dst, lrintf((float)FinWing_55_AWES_Drone_Reel_Ou_Y.Altitude));
             //sbufWriteU32(dst, lrintf((float)FinWing_55_AWES_Drone_Reel_Ou_U.ElevonPitch));
-            sbufWriteU32(dst, lrintf((float)(FinWing_55_AWES_Drone_Reel_Ou_Y.Altitude * 100)));
-            sbufWriteU32(dst, lrintf((float)(FinWing_55_AWES_Drone_Reel_Ou_U.ElevonPitch * 100)));
+            sbufWriteU32(dst, lrintf((float)(PartialImplemAWES3DOF_P1_A_Y.Altitude * 1000)));
+            sbufWriteU32(dst, lrintf((float)(PartialImplemAWES3DOF_P1_A_U.AltCmd * 1000)));
             sbufWriteU32(dst, stepNumber);
             sbufWriteU32(dst, 0);
             sbufWriteU32(dst, 0);

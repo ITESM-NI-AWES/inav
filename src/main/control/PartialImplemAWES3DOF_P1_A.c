@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'PartialImplemAWES3DOF_P1_A'.
  *
- * Model version                  : 1.154
+ * Model version                  : 1.156
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Fri May 22 17:37:58 2020
+ * C/C++ source code generated on : Fri May 22 18:47:53 2020
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -32,6 +32,9 @@ PeriodicRngX_PartialImplemAWE_T PartialImplemAWES3_PeriodicRngX;
 
 /* Block states (default storage) */
 DW_PartialImplemAWES3DOF_P1_A_T PartialImplemAWES3DOF_P1_A_DW;
+
+/* External inputs (root inport signals with default storage) */
+ExtU_PartialImplemAWES3DOF_P1_T PartialImplemAWES3DOF_P1_A_U;
 
 /* External outputs (root outports fed by signals with default storage) */
 ExtY_PartialImplemAWES3DOF_P1_T PartialImplemAWES3DOF_P1_A_Y;
@@ -120,6 +123,19 @@ real_T intrp2d_s32dl_pw(const int32_T bpIndex[], const real_T frac[], const
   offset_1d += stride;
   return (((table[offset_1d + 1U] - table[offset_1d]) * frac[0U] +
            table[offset_1d]) - yL_1d) * frac[1U] + yL_1d;
+}
+
+real_T intrp1d_s32dl_pw(int32_T bpIndex, real_T frac, const real_T table[])
+{
+  uint32_T offset_0d;
+
+  /* Column-major Interpolation 1-D
+     Interpolation method: 'Linear point-slope'
+     Use last breakpoint for index at or above upper limit: 'off'
+     Overflow mode: 'portable wrapping'
+   */
+  offset_0d = (uint32_T)bpIndex;
+  return (table[offset_0d + 1U] - table[offset_0d]) * frac + table[offset_0d];
 }
 
 uint32_T binsearch_u32d(real_T u, const real_T bp[], uint32_T startIndex,
@@ -309,11 +325,11 @@ real_T rt_atan2d_snf(real_T u0, real_T u1)
 void PartialImplemAWES3DOF_P1_A_step(void)
 {
   uint32_T rtb_Prelookup_o1;
-  real_T rtb_Product_m;
-  real_T rtb_UnaryMinus;
+  int32_T rtb_Prelookup_o1_g;
+  real_T rtb_sincos_o2_a;
   int32_T bpIndex[2];
-  real_T rtb_Product1_c_tmp;
-  int32_T iU;
+  real_T rtb_Gain1_tmp;
+  real_T rtb_Va_tmp;
   real_T rtb_Transpose_tmp;
   real_T rtb_sincos_o2_tmp;
   if (rtmIsMajorTimeStep(PartialImplemAWES3DOF_P1_A_M)) {
@@ -377,13 +393,13 @@ void PartialImplemAWES3DOF_P1_A_step(void)
   PartialImplemAWES3DOF_P1_A_B.Transpose[8] = rtb_sincos_o2_tmp;
 
   /* Math: '<S12>/Transpose' */
-  for (iU = 0; iU < 3; iU++) {
-    PartialImplemAWES3DOF_P1_A_B.rtb_Transpose_m[3 * iU] =
-      PartialImplemAWES3DOF_P1_A_B.Transpose[iU];
-    PartialImplemAWES3DOF_P1_A_B.rtb_Transpose_m[3 * iU + 1] =
-      PartialImplemAWES3DOF_P1_A_B.Transpose[iU + 3];
-    PartialImplemAWES3DOF_P1_A_B.rtb_Transpose_m[3 * iU + 2] =
-      PartialImplemAWES3DOF_P1_A_B.Transpose[iU + 6];
+  for (rtb_Prelookup_o1_g = 0; rtb_Prelookup_o1_g < 3; rtb_Prelookup_o1_g++) {
+    PartialImplemAWES3DOF_P1_A_B.rtb_Transpose_m[3 * rtb_Prelookup_o1_g] =
+      PartialImplemAWES3DOF_P1_A_B.Transpose[rtb_Prelookup_o1_g];
+    PartialImplemAWES3DOF_P1_A_B.rtb_Transpose_m[3 * rtb_Prelookup_o1_g + 1] =
+      PartialImplemAWES3DOF_P1_A_B.Transpose[rtb_Prelookup_o1_g + 3];
+    PartialImplemAWES3DOF_P1_A_B.rtb_Transpose_m[3 * rtb_Prelookup_o1_g + 2] =
+      PartialImplemAWES3DOF_P1_A_B.Transpose[rtb_Prelookup_o1_g + 6];
   }
 
   memcpy(&PartialImplemAWES3DOF_P1_A_B.Transpose[0],
@@ -408,25 +424,25 @@ void PartialImplemAWES3DOF_P1_A_step(void)
   PartialImplemAWES3DOF_P1_A_B.sincos_o1_j[1] =
     PartialImplemAWES3DOF_P1_A_X.theta;
   PartialImplemAWES3DOF_P1_A_B.sincos_o1_j[2] = 0.0;
-  for (iU = 0; iU < 3; iU++) {
+  for (rtb_Prelookup_o1_g = 0; rtb_Prelookup_o1_g < 3; rtb_Prelookup_o1_g++) {
     /* Trigonometry: '<S8>/sincos' */
-    PartialImplemAWES3DOF_P1_A_B.Product_b[iU] = cos
-      (PartialImplemAWES3DOF_P1_A_B.sincos_o1_j[iU]);
+    PartialImplemAWES3DOF_P1_A_B.Product_b[rtb_Prelookup_o1_g] = cos
+      (PartialImplemAWES3DOF_P1_A_B.sincos_o1_j[rtb_Prelookup_o1_g]);
 
     /* Product: '<S12>/Product' incorporates:
      *  Integrator: '<S7>/U,w'
      *  SignalConversion generated from: '<S12>/Product'
      */
-    PartialImplemAWES3DOF_P1_A_B.sincos_o2[iU] =
-      PartialImplemAWES3DOF_P1_A_B.Transpose[iU + 6] *
+    PartialImplemAWES3DOF_P1_A_B.sincos_o2[rtb_Prelookup_o1_g] =
+      PartialImplemAWES3DOF_P1_A_B.Transpose[rtb_Prelookup_o1_g + 6] *
       PartialImplemAWES3DOF_P1_A_X.u[1] +
-      (PartialImplemAWES3DOF_P1_A_B.Transpose[iU + 3] * 0.0 +
-       PartialImplemAWES3DOF_P1_A_B.Transpose[iU] *
+      (PartialImplemAWES3DOF_P1_A_B.Transpose[rtb_Prelookup_o1_g + 3] * 0.0 +
+       PartialImplemAWES3DOF_P1_A_B.Transpose[rtb_Prelookup_o1_g] *
        PartialImplemAWES3DOF_P1_A_X.u[0]);
 
     /* Trigonometry: '<S8>/sincos' */
-    PartialImplemAWES3DOF_P1_A_B.sincos_o1_j[iU] = sin
-      (PartialImplemAWES3DOF_P1_A_B.sincos_o1_j[iU]);
+    PartialImplemAWES3DOF_P1_A_B.sincos_o1_j[rtb_Prelookup_o1_g] = sin
+      (PartialImplemAWES3DOF_P1_A_B.sincos_o1_j[rtb_Prelookup_o1_g]);
   }
 
   /* Fcn: '<S8>/Fcn11' */
@@ -489,13 +505,13 @@ void PartialImplemAWES3DOF_P1_A_step(void)
     PartialImplemAWES3DOF_P1_A_B.Product_b[1];
 
   /* Product: '<S1>/Product' */
-  for (iU = 0; iU < 3; iU++) {
-    PartialImplemAWES3DOF_P1_A_B.Product_b[iU] =
-      PartialImplemAWES3DOF_P1_A_B.Transpose[iU + 6] *
+  for (rtb_Prelookup_o1_g = 0; rtb_Prelookup_o1_g < 3; rtb_Prelookup_o1_g++) {
+    PartialImplemAWES3DOF_P1_A_B.Product_b[rtb_Prelookup_o1_g] =
+      PartialImplemAWES3DOF_P1_A_B.Transpose[rtb_Prelookup_o1_g + 6] *
       PartialImplemAWES3DOF_P1_ConstB.Gain[2] +
-      (PartialImplemAWES3DOF_P1_A_B.Transpose[iU + 3] *
+      (PartialImplemAWES3DOF_P1_A_B.Transpose[rtb_Prelookup_o1_g + 3] *
        PartialImplemAWES3DOF_P1_ConstB.Gain[1] +
-       PartialImplemAWES3DOF_P1_A_B.Transpose[iU] *
+       PartialImplemAWES3DOF_P1_A_B.Transpose[rtb_Prelookup_o1_g] *
        PartialImplemAWES3DOF_P1_ConstB.Gain[0]);
   }
 
@@ -519,21 +535,21 @@ void PartialImplemAWES3DOF_P1_A_step(void)
   /* Trigonometry: '<S21>/Incidence' incorporates:
    *  Integrator: '<S7>/U,w'
    */
-  PartialImplemAWES3DOF_P1_A_B.Gain1 = rt_atan2d_snf
+  PartialImplemAWES3DOF_P1_A_B.TrigonometricFunction = rt_atan2d_snf
     (PartialImplemAWES3DOF_P1_A_X.u[1], PartialImplemAWES3DOF_P1_A_X.u[0]);
 
   /* Trigonometry: '<S22>/Trigonometric Function' incorporates:
    *  Trigonometry: '<S23>/Trigonometric Function'
    *  Trigonometry: '<S5>/Trigonometric Function'
    */
-  rtb_Transpose_tmp = sin(PartialImplemAWES3DOF_P1_A_B.Gain1);
-  rtb_Product1_c_tmp = cos(PartialImplemAWES3DOF_P1_A_B.Gain1);
+  rtb_Transpose_tmp = sin(PartialImplemAWES3DOF_P1_A_B.TrigonometricFunction);
+  rtb_Gain1_tmp = cos(PartialImplemAWES3DOF_P1_A_B.TrigonometricFunction);
 
   /* UnitConversion: '<S26>/Unit Conversion' */
   /* Unit Conversion - from: rad to: deg
      Expression: output = (57.2958*input) + (0) */
   PartialImplemAWES3DOF_P1_A_B.CM = 57.295779513082323 *
-    PartialImplemAWES3DOF_P1_A_B.Gain1;
+    PartialImplemAWES3DOF_P1_A_B.TrigonometricFunction;
 
   /* PreLookup: '<S22>/Prelookup' */
   rtb_Prelookup_o1 = plook_binx(PartialImplemAWES3DOF_P1_A_B.CM,
@@ -541,36 +557,58 @@ void PartialImplemAWES3DOF_P1_A_step(void)
     &PartialImplemAWES3DOF_P1_A_B.CM);
 
   /* Interpolation_n-D: '<S22>/CD' */
-  PartialImplemAWES3DOF_P1_A_B.CD = intrp1d_l_pw(rtb_Prelookup_o1,
+  PartialImplemAWES3DOF_P1_A_B.Gain_j = intrp1d_l_pw(rtb_Prelookup_o1,
     PartialImplemAWES3DOF_P1_A_B.CM, PartialImplemAWES3DOF_P1_ConstP.CD_Table);
 
   /* Interpolation_n-D: '<S22>/CL' */
-  PartialImplemAWES3DOF_P1_A_B.Gain_j = intrp1d_l_pw(rtb_Prelookup_o1,
+  PartialImplemAWES3DOF_P1_A_B.Product1_l = intrp1d_l_pw(rtb_Prelookup_o1,
     PartialImplemAWES3DOF_P1_A_B.CM, PartialImplemAWES3DOF_P1_ConstP.CL_Table);
 
   /* UnitConversion: '<S27>/Unit Conversion' */
   /* Unit Conversion - from: rad to: deg
      Expression: output = (57.2958*input) + (0) */
-  PartialImplemAWES3DOF_P1_A_B.Gain1 *= 57.295779513082323;
+  PartialImplemAWES3DOF_P1_A_B.UnaryMinus = 57.295779513082323 *
+    PartialImplemAWES3DOF_P1_A_B.TrigonometricFunction;
 
   /* Interpolation_n-D: '<S23>/CD_el' incorporates:
    *  PreLookup: '<S23>/Prelookup1'
    */
-  bpIndex[0] = plook_s32dd_binx(PartialImplemAWES3DOF_P1_A_B.Gain1,
+  bpIndex[0] = plook_s32dd_binx(PartialImplemAWES3DOF_P1_A_B.UnaryMinus,
     PartialImplemAWES3DOF_P1_ConstP.pooled3, 9U,
-    &PartialImplemAWES3DOF_P1_A_B.Gain1);
-  PartialImplemAWES3DOF_P1_A_B.frac[0] = PartialImplemAWES3DOF_P1_A_B.Gain1;
-  PartialImplemAWES3DOF_P1_A_B.frac[1] =
-    PartialImplemAWES3DOF_P1_ConstB.Prelookup_o2;
-  bpIndex[1] = PartialImplemAWES3DOF_P1_ConstB.Prelookup_o1;
-  PartialImplemAWES3DOF_P1_A_B.Gain1 = intrp2d_s32dl_pw(bpIndex,
+    &PartialImplemAWES3DOF_P1_A_B.UnaryMinus);
+
+  /* UnitConversion: '<S28>/Unit Conversion' incorporates:
+   *  Gain: '<S3>/Gain1'
+   *  Inport: '<Root>/Elevator Command'
+   */
+  /* Unit Conversion - from: rad to: deg
+     Expression: output = (57.2958*input) + (0) */
+  PartialImplemAWES3DOF_P1_A_B.CM_el = 0.017453292519943295 *
+    PartialImplemAWES3DOF_P1_A_U.AltCmd * 57.295779513082323;
+
+  /* PreLookup: '<S23>/Prelookup' */
+  rtb_Prelookup_o1_g = plook_s32dd_binx(PartialImplemAWES3DOF_P1_A_B.CM_el,
+    PartialImplemAWES3DOF_P1_ConstP.Prelookup_BreakpointsData, 4U,
+    &PartialImplemAWES3DOF_P1_A_B.CM_el);
+
+  /* Interpolation_n-D: '<S23>/CD_el' */
+  PartialImplemAWES3DOF_P1_A_B.frac[0] = PartialImplemAWES3DOF_P1_A_B.UnaryMinus;
+  PartialImplemAWES3DOF_P1_A_B.frac[1] = PartialImplemAWES3DOF_P1_A_B.CM_el;
+  bpIndex[1] = rtb_Prelookup_o1_g;
+  PartialImplemAWES3DOF_P1_A_B.UnaryMinus = intrp2d_s32dl_pw(bpIndex,
     PartialImplemAWES3DOF_P1_A_B.frac,
     PartialImplemAWES3DOF_P1_ConstP.CD_el_Table, 10U);
+
+  /* Interpolation_n-D: '<S23>/CL_el' */
+  PartialImplemAWES3DOF_P1_A_B.gain2_p = intrp1d_s32dl_pw(rtb_Prelookup_o1_g,
+    PartialImplemAWES3DOF_P1_A_B.CM_el,
+    PartialImplemAWES3DOF_P1_ConstP.CL_el_Table);
 
   /* Sum: '<S2>/Fx_tot' incorporates:
    *  Gain: '<S18>/gain1'
    *  Gain: '<S20>/gain1'
    *  Gain: '<S22>/coeffAdjust2'
+   *  Gain: '<S23>/coeffAdjust'
    *  Gain: '<S23>/coeffAdjust1'
    *  Product: '<S18>/Product2'
    *  Product: '<S20>/Product2'
@@ -582,11 +620,11 @@ void PartialImplemAWES3DOF_P1_A_step(void)
    *  Sum: '<S23>/Sum1'
    *  Trigonometry: '<S22>/Trigonometric Function'
    */
-  rtb_UnaryMinus = (-(rtb_Product1_c_tmp * PartialImplemAWES3DOF_P1_A_B.CD) +
-                    rtb_Transpose_tmp * PartialImplemAWES3DOF_P1_A_B.Gain_j) *
-    PartialImplemAWES3DOF_P1_A_B.u2rhoV2 * 0.0046 + (-(rtb_Product1_c_tmp *
-    PartialImplemAWES3DOF_P1_A_B.Gain1) + rtb_Transpose_tmp *
-    PartialImplemAWES3DOF_P1_ConstB.coeffAdjust) *
+  rtb_sincos_o2_a = (-(rtb_Gain1_tmp * PartialImplemAWES3DOF_P1_A_B.Gain_j) +
+                     rtb_Transpose_tmp * PartialImplemAWES3DOF_P1_A_B.Product1_l)
+    * PartialImplemAWES3DOF_P1_A_B.u2rhoV2 * 0.0046 + (-(rtb_Gain1_tmp *
+    PartialImplemAWES3DOF_P1_A_B.UnaryMinus) + rtb_Transpose_tmp *
+    -PartialImplemAWES3DOF_P1_A_B.gain2_p) *
     PartialImplemAWES3DOF_P1_A_B.u2rhoV2 * 0.0046;
 
   /* Gain: '<S20>/gain2 ' incorporates:
@@ -596,10 +634,26 @@ void PartialImplemAWES3DOF_P1_A_step(void)
    *  Product: '<S23>/Product1'
    *  Sum: '<S23>/Sum'
    */
-  PartialImplemAWES3DOF_P1_A_B.Gain1 = (-(rtb_Transpose_tmp *
-    PartialImplemAWES3DOF_P1_A_B.Gain1) + rtb_Product1_c_tmp *
-    PartialImplemAWES3DOF_P1_ConstB.CL_el) *
-    PartialImplemAWES3DOF_P1_A_B.u2rhoV2 * 0.0046;
+  PartialImplemAWES3DOF_P1_A_B.gain2_p = (-(rtb_Transpose_tmp *
+    PartialImplemAWES3DOF_P1_A_B.UnaryMinus) + rtb_Gain1_tmp *
+    PartialImplemAWES3DOF_P1_A_B.gain2_p) * PartialImplemAWES3DOF_P1_A_B.u2rhoV2
+    * 0.0046;
+
+  /* Sum: '<S2>/Fz_tot' incorporates:
+   *  Gain: '<S18>/gain2 '
+   *  Gain: '<S22>/coeffAdjust1'
+   *  Gain: '<S22>/coeffAdjust3'
+   *  Product: '<S18>/Product3'
+   *  Product: '<S22>/Product'
+   *  Product: '<S22>/Product1'
+   *  Sum: '<S22>/Sum'
+   *  Trigonometry: '<S22>/Trigonometric Function'
+   */
+  PartialImplemAWES3DOF_P1_A_B.UnaryMinus = (-(rtb_Transpose_tmp *
+    PartialImplemAWES3DOF_P1_A_B.Gain_j) + -(rtb_Gain1_tmp *
+    PartialImplemAWES3DOF_P1_A_B.Product1_l)) *
+    PartialImplemAWES3DOF_P1_A_B.u2rhoV2 * 0.0046 +
+    PartialImplemAWES3DOF_P1_A_B.gain2_p;
 
   /* Trigonometry: '<S1>/Trigonometric Function' incorporates:
    *  Gain: '<S1>/Gain1'
@@ -612,7 +666,7 @@ void PartialImplemAWES3DOF_P1_A_step(void)
   /* Trigonometry: '<S2>/Cos' incorporates:
    *  Trigonometry: '<S6>/Cos'
    */
-  rtb_Product_m = cos(PartialImplemAWES3DOF_P1_A_B.TrigonometricFunction);
+  rtb_Va_tmp = cos(PartialImplemAWES3DOF_P1_A_B.TrigonometricFunction);
 
   /* Sum: '<S2>/Va' incorporates:
    *  Constant: '<Root>/Vreel '
@@ -623,38 +677,35 @@ void PartialImplemAWES3DOF_P1_A_step(void)
    *  Sqrt: '<S2>/Sqrt'
    *  Trigonometry: '<S2>/Cos'
    */
-  PartialImplemAWES3DOF_P1_A_B.sincos_o2_b = sqrt(2.0 *
-    PartialImplemAWES3DOF_P1_A_B.u2rhoV2 / 1.00649) * rtb_Product_m - 10.0;
-
-  /* Math: '<S2>/Square1' */
-  PartialImplemAWES3DOF_P1_A_B.Square1 =
-    PartialImplemAWES3DOF_P1_A_B.sincos_o2_b *
-    PartialImplemAWES3DOF_P1_A_B.sincos_o2_b;
+  PartialImplemAWES3DOF_P1_A_B.Va = sqrt(2.0 *
+    PartialImplemAWES3DOF_P1_A_B.u2rhoV2 / 1.00649) * rtb_Va_tmp - 10.0;
 
   /* Product: '<S2>/Divide1' incorporates:
    *  Constant: '<S2>/Add_Cable_Drag'
    *  Product: '<S2>/Product2'
    */
-  PartialImplemAWES3DOF_P1_A_B.sincos_o2_b = PartialImplemAWES3DOF_P1_A_B.Gain_j
-    / (20.0 * PartialImplemAWES3DOF_P1_A_B.CD);
+  PartialImplemAWES3DOF_P1_A_B.Gain_j = PartialImplemAWES3DOF_P1_A_B.Product1_l /
+    (20.0 * PartialImplemAWES3DOF_P1_A_B.Gain_j);
 
   /* Gain: '<S18>/gain2' incorporates:
    *  Math: '<S2>/Square'
+   *  Math: '<S2>/Square1'
    *  Product: '<S2>/Product1'
    */
-  PartialImplemAWES3DOF_P1_A_B.sincos_o2_b =
-    PartialImplemAWES3DOF_P1_A_B.Square1 * PartialImplemAWES3DOF_P1_ConstB.Gain1
-    * PartialImplemAWES3DOF_P1_A_B.Gain_j *
-    (PartialImplemAWES3DOF_P1_A_B.sincos_o2_b *
-     PartialImplemAWES3DOF_P1_A_B.sincos_o2_b) * 0.0046;
+  PartialImplemAWES3DOF_P1_A_B.Product1_l = PartialImplemAWES3DOF_P1_A_B.Va *
+    PartialImplemAWES3DOF_P1_A_B.Va * PartialImplemAWES3DOF_P1_ConstB.Gain1 *
+    PartialImplemAWES3DOF_P1_A_B.Product1_l *
+    (PartialImplemAWES3DOF_P1_A_B.Gain_j * PartialImplemAWES3DOF_P1_A_B.Gain_j) *
+    0.0046;
 
   /* Product: '<S6>/Product' */
-  rtb_Product_m *= PartialImplemAWES3DOF_P1_A_B.sincos_o2_b;
+  PartialImplemAWES3DOF_P1_A_B.Gain_j = PartialImplemAWES3DOF_P1_A_B.Product1_l *
+    rtb_Va_tmp;
 
   /* Product: '<S6>/Product1' incorporates:
    *  Trigonometry: '<S6>/Sin'
    */
-  PartialImplemAWES3DOF_P1_A_B.sincos_o2_b *= sin
+  PartialImplemAWES3DOF_P1_A_B.Product1_l *= sin
     (PartialImplemAWES3DOF_P1_A_B.TrigonometricFunction);
 
   /* Integrator: '<S7>/q' */
@@ -663,17 +714,11 @@ void PartialImplemAWES3DOF_P1_A_step(void)
   /* Sum: '<S7>/Sum1' incorporates:
    *  Constant: '<S10>/Constant'
    *  Constant: '<S7>/gravity'
-   *  Gain: '<S18>/gain2 '
-   *  Gain: '<S22>/coeffAdjust1'
-   *  Gain: '<S22>/coeffAdjust3'
    *  Gain: '<S6>/Gain'
    *  Gain: '<S7>/Matrix Gain'
    *  Integrator: '<S7>/Theta'
    *  Integrator: '<S7>/U,w'
    *  Product: '<S11>/Product'
-   *  Product: '<S18>/Product3'
-   *  Product: '<S22>/Product'
-   *  Product: '<S22>/Product1'
    *  Product: '<S5>/Product1'
    *  Product: '<S5>/Product3'
    *  Product: '<S7>/Product'
@@ -681,25 +726,21 @@ void PartialImplemAWES3DOF_P1_A_step(void)
    *  Sum: '<Root>/Sum2'
    *  Sum: '<Root>/Sum3'
    *  Sum: '<S1>/Sum2'
-   *  Sum: '<S22>/Sum'
-   *  Sum: '<S2>/Fz_tot'
    *  Sum: '<S7>/Sum'
    *  Trigonometry: '<S11>/sincos'
-   *  Trigonometry: '<S22>/Trigonometric Function'
    *  UnaryMinus: '<S11>/Unary Minus'
    */
-  PartialImplemAWES3DOF_P1_A_B.Sum1[0] = ((((rtb_Product1_c_tmp *
-    PartialImplemAWES3DOF_P1_ConstB.Thrust + -rtb_Product_m) + rtb_UnaryMinus) +
+  PartialImplemAWES3DOF_P1_A_B.Sum1[0] = ((((rtb_Gain1_tmp *
+    PartialImplemAWES3DOF_P1_ConstB.Thrust +
+    -PartialImplemAWES3DOF_P1_A_B.Gain_j) + rtb_sincos_o2_a) +
     PartialImplemAWES3DOF_P1_A_B.Product_b[0]) / 1.5 + -sin
     (PartialImplemAWES3DOF_P1_A_X.theta) * 0.0) + (0.0 *
     PartialImplemAWES3DOF_P1_A_X.u[0] + -PartialImplemAWES3DOF_P1_A_X.u[1]) *
     PartialImplemAWES3DOF_P1_A_B.q;
-  PartialImplemAWES3DOF_P1_A_B.Sum1[1] = (((((-(rtb_Transpose_tmp *
-    PartialImplemAWES3DOF_P1_A_B.CD) + -(rtb_Product1_c_tmp *
-    PartialImplemAWES3DOF_P1_A_B.Gain_j)) * PartialImplemAWES3DOF_P1_A_B.u2rhoV2
-    * 0.0046 + PartialImplemAWES3DOF_P1_A_B.Gain1) + (rtb_Transpose_tmp *
+  PartialImplemAWES3DOF_P1_A_B.Sum1[1] = ((((rtb_Transpose_tmp *
     PartialImplemAWES3DOF_P1_ConstB.Thrust +
-    PartialImplemAWES3DOF_P1_A_B.sincos_o2_b)) +
+    PartialImplemAWES3DOF_P1_A_B.Product1_l) +
+    PartialImplemAWES3DOF_P1_A_B.UnaryMinus) +
     PartialImplemAWES3DOF_P1_A_B.Product_b[2]) / 1.5 + rtb_sincos_o2_tmp * 0.0)
     + (0.0 * PartialImplemAWES3DOF_P1_A_X.u[1] + PartialImplemAWES3DOF_P1_A_X.u
        [0]) * PartialImplemAWES3DOF_P1_A_B.q;
@@ -713,6 +754,11 @@ void PartialImplemAWES3DOF_P1_A_step(void)
   /* Interpolation_n-D: '<S22>/CM' */
   PartialImplemAWES3DOF_P1_A_B.CM = intrp1d_l_pw(rtb_Prelookup_o1,
     PartialImplemAWES3DOF_P1_A_B.CM, PartialImplemAWES3DOF_P1_ConstP.CM_Table);
+
+  /* Interpolation_n-D: '<S23>/CM_el' */
+  PartialImplemAWES3DOF_P1_A_B.CM_el = intrp1d_s32dl_pw(rtb_Prelookup_o1_g,
+    PartialImplemAWES3DOF_P1_A_B.CM_el,
+    PartialImplemAWES3DOF_P1_ConstP.CM_el_Table);
   if (rtmIsMajorTimeStep(PartialImplemAWES3DOF_P1_A_M)) {
     /* Sum: '<Root>/Sum4' incorporates:
      *  Constant: '<S6>/TetherForce_M'
@@ -737,8 +783,8 @@ void PartialImplemAWES3DOF_P1_A_step(void)
    */
   PartialImplemAWES3DOF_P1_A_B.Product2 =
     ((((PartialImplemAWES3DOF_P1_A_B.u2rhoV2 *
-        PartialImplemAWES3DOF_P1_ConstB.CM_el * 8.51E-5 +
-        PartialImplemAWES3DOF_P1_A_B.Gain1 * 0.0) +
+        PartialImplemAWES3DOF_P1_A_B.CM_el * 8.51E-5 +
+        PartialImplemAWES3DOF_P1_A_B.gain2_p * 0.0) +
        PartialImplemAWES3DOF_P1_A_B.u2rhoV2 * PartialImplemAWES3DOF_P1_A_B.CM *
        8.51E-5) + PartialImplemAWES3DOF_P1_A_B.Sum4) - 0.0 *
      PartialImplemAWES3DOF_P1_A_B.q) / 8.0;
@@ -809,6 +855,7 @@ void PartialImplemAWES3DOF_P1_A_derivatives(void)
 /* Model initialize function */
 void PartialImplemAWES3DOF_P1_A_initialize(void)
 {
+  PartialImplemAWES3DOF_P1_A_U.AltCmd = 0;
   /* Registration code */
 
   /* initialize non-finites */
@@ -881,11 +928,6 @@ void PartialImplemAWES3DOF_P1_A_initialize(void)
 
   /* InitializeConditions for Integrator: '<S7>/q' */
   PartialImplemAWES3DOF_P1_A_X.q = 0.0;
-
-  /* ConstCode for Outport: '<Root>/Elevator Command' incorporates:
-   *  Constant: '<Root>/elevator'
-   */
-  PartialImplemAWES3DOF_P1_A_Y.ElevatorCommand = -20.0;
 
   /* InitializeConditions for root-level periodic continuous states */
   {

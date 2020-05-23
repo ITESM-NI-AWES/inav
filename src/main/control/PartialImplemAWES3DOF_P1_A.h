@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'PartialImplemAWES3DOF_P1_A'.
  *
- * Model version                  : 1.154
+ * Model version                  : 1.156
  * Simulink Coder version         : 9.3 (R2020a) 18-Nov-2019
- * C/C++ source code generated on : Fri May 22 17:37:58 2020
+ * C/C++ source code generated on : Fri May 22 18:47:53 2020
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -157,20 +157,21 @@ typedef struct {
   real_T sincos_o1_j[3];               /* '<S8>/sincos' */
   real_T sincos_o2[3];                 /* '<S15>/sincos' */
   real_T Product_b[3];                 /* '<S1>/Product' */
-  real_T frac[2];
-  real_T q;                            /* '<S7>/q' */
   real_T Sum1[2];                      /* '<S7>/Sum1' */
   real_T TmpSignalConversionAtPositionIn[2];/* '<S7>/Transform  to Earth Axes' */
+  real_T frac[2];
+  real_T q;                            /* '<S7>/q' */
   real_T Sum4;                         /* '<Root>/Sum4' */
   real_T Product2;                     /* '<S9>/Product2' */
+  real_T Va;                           /* '<S2>/Va' */
   real_T TrigonometricFunction;        /* '<S1>/Trigonometric Function' */
-  real_T Gain1;                        /* '<S1>/Gain1' */
   real_T u2rhoV2;                      /* '<S19>/1//2rhoV^2' */
   real_T CM;                           /* '<S22>/CM' */
-  real_T CD;                           /* '<S22>/CD' */
   real_T Gain_j;                       /* '<S6>/Gain' */
-  real_T sincos_o2_b;                  /* '<S11>/sincos' */
-  real_T Square1;                      /* '<S2>/Square1' */
+  real_T Product1_l;                   /* '<S6>/Product1' */
+  real_T UnaryMinus;                   /* '<S11>/Unary Minus' */
+  real_T CM_el;                        /* '<S23>/CM_el' */
+  real_T gain2_p;                      /* '<S20>/gain2 ' */
 } B_PartialImplemAWES3DOF_P1_A_T;
 
 /* Block states (default storage) for system '<Root>' */
@@ -211,14 +212,7 @@ typedef struct {
 typedef struct {
   const real_T Gain[3];                /* '<S1>/Gain' */
   const real_T Gain1;                  /* '<S2>/Gain1' */
-  const real_T Gain1_l;                /* '<S3>/Gain1' */
-  const real_T UnitConversion;         /* '<S28>/Unit Conversion' */
-  const real_T Prelookup_o2;           /* '<S23>/Prelookup' */
-  const real_T CL_el;                  /* '<S23>/CL_el' */
-  const real_T CM_el;                  /* '<S23>/CM_el' */
-  const real_T coeffAdjust;            /* '<S23>/coeffAdjust' */
   const real_T Thrust;                 /* '<S5>/Thrust' */
-  const int32_T Prelookup_o1;          /* '<S23>/Prelookup' */
 } ConstB_PartialImplemAWES3DOF__T;
 
 #ifndef ODE3_INTG
@@ -251,21 +245,40 @@ typedef struct {
    */
   real_T CL_Table[10];
 
+  /* Expression: aeroCoeff.def_vec
+   * Referenced by: '<S23>/Prelookup'
+   */
+  real_T Prelookup_BreakpointsData[5];
+
   /* Expression: aeroCoeff.CD_el
    * Referenced by: '<S23>/CD_el'
    */
   real_T CD_el_Table[50];
 
+  /* Expression: aeroCoeff.CL_el
+   * Referenced by: '<S23>/CL_el'
+   */
+  real_T CL_el_Table[5];
+
   /* Expression: aeroCoeff.CM
    * Referenced by: '<S22>/CM'
    */
   real_T CM_Table[10];
+
+  /* Expression: aeroCoeff.CM_el
+   * Referenced by: '<S23>/CM_el'
+   */
+  real_T CM_el_Table[5];
 } ConstP_PartialImplemAWES3DOF__T;
+
+/* External inputs (root inport signals with default storage) */
+typedef struct {
+  real_T AltCmd;                       /* '<Root>/Elevator Command' */
+} ExtU_PartialImplemAWES3DOF_P1_T;
 
 /* External outputs (root outports fed by signals with default storage) */
 typedef struct {
   real_T Altitude;                     /* '<Root>/Altitude' */
-  real_T ElevatorCommand;              /* '<Root>/Elevator Command' */
 } ExtY_PartialImplemAWES3DOF_P1_T;
 
 /* Real-time Model Data Structure */
@@ -321,6 +334,9 @@ extern X_PartialImplemAWES3DOF_P1_A_T PartialImplemAWES3DOF_P1_A_X;
 
 /* Block states (default storage) */
 extern DW_PartialImplemAWES3DOF_P1_A_T PartialImplemAWES3DOF_P1_A_DW;
+
+/* External inputs (root inport signals with default storage) */
+extern ExtU_PartialImplemAWES3DOF_P1_T PartialImplemAWES3DOF_P1_A_U;
 
 /* External outputs (root outports fed by signals with default storage) */
 extern ExtY_PartialImplemAWES3DOF_P1_T PartialImplemAWES3DOF_P1_A_Y;

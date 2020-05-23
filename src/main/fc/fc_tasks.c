@@ -88,39 +88,21 @@
 
 #include "uav_interconnect/uav_interconnect.h"
 
-#include "control/FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep.h"
+#include "control/PartialImplemAWES3DOF_P1_A.h"
+
+uint32_t stepNumber = 0; //this counts the step for our custom process
 
 void rt_OneStep(timeUs_t currentTimeUs);
 void rt_OneStep(timeUs_t currentTimeUs)
 {
     UNUSED(currentTimeUs);
-  static boolean_T OverrunFlag = false;
-
-  /* Disable interrupts here */
-
-  /* Check for overrun */
-  if (OverrunFlag) {
-    rtmSetErrorStatus(FinWing_55_AWES_Drone_Reel_O_M, "Overrun");
-    return;
-  }
-
-  OverrunFlag = true;
-
-  /* Save FPU context here (if necessary) */
-  /* Re-enable timer or interrupt here */
-  /* Set model inputs here */
-
-  /* Step the model for base rate */
-  FinWing_55_AWES_Drone_Reel_Out_Test_V_03_1_fixedstep_step();
-
-  /* Get model outputs here */
-
-  /* Indicate task complete */
-  OverrunFlag = false;
-
-  /* Disable interrupts here */
-  /* Restore FPU context here (if necessary) */
-  /* Enable interrupts here */
+    static uint32_t countdown = 0;
+    if (countdown > 10 * 1000 && stepNumber < 4294967294){ //task waits 5 sec before starting
+        PartialImplemAWES3DOF_P1_A_step();
+        stepNumber ++;
+    }else{
+        countdown ++;
+    }
 }
 
 void taskHandleSerial(timeUs_t currentTimeUs)
