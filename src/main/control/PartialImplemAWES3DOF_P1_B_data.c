@@ -3,7 +3,7 @@
  * course requirements at degree granting institutions only.  Not for
  * government, commercial, or other organizational use.
  *
- * File: rtmodel.h
+ * File: PartialImplemAWES3DOF_P1_B_data.c
  *
  * Code generated for Simulink model 'PartialImplemAWES3DOF_P1_B'.
  *
@@ -17,10 +17,15 @@
  * Validation result: Not run
  */
 
-#ifndef RTW_HEADER_rtmodel_h_
-#define RTW_HEADER_rtmodel_h_
 #include "PartialImplemAWES3DOF_P1_B.h"
-#endif                                 /* RTW_HEADER_rtmodel_h_ */
+#include "PartialImplemAWES3DOF_P1_B_private.h"
+
+/* Invariant block signals (default storage) */
+const ConstB_PartialImplemAWES3DOF__T PartialImplemAWES3DOF_P1_ConstB = {
+  600.0,                               /* '<Root>/Altitude_Selector2' */
+  20.0,                                /* '<Root>/Theta_Angle_Selector' */
+  0.3490658503988659                   /* '<S2>/Gain1' */
+};
 
 /*
  * File trailer for generated code.

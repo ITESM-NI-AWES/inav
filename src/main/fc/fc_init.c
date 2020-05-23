@@ -143,7 +143,7 @@
 
 #include "uav_interconnect/uav_interconnect.h"
 
-#include "control/PartialImplemAWES3DOF_P1_A.h"
+#include "control/PartialImplemAWES3DOF_P1_B.h"
 
 #ifdef USE_HARDWARE_REVISION_DETECTION
 #include "hardware_revision.h"
@@ -694,6 +694,6 @@ void init(void)
 
     systemState |= SYSTEM_STATE_READY;
 #ifdef ENABLE_3DOF_EXPERIMENT
-    PartialImplemAWES3DOF_P1_A_initialize();
+    PartialImplemAWES3DOF_P1_B_initialize();
 #endif
 }

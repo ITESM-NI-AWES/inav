@@ -88,7 +88,7 @@
 
 #include "uav_interconnect/uav_interconnect.h"
 
-#include "control/PartialImplemAWES3DOF_P1_A.h"
+#include "control/PartialImplemAWES3DOF_P1_B.h"
 
 uint32_t stepNumber = 0; //this counts the step for our custom process
 
@@ -98,7 +98,7 @@ void rt_OneStep(timeUs_t currentTimeUs)
     UNUSED(currentTimeUs);
     static uint32_t countdown = 0;
     if (countdown > 10 * 1000 && stepNumber < 4294967294){ //task waits 5 sec before starting
-        PartialImplemAWES3DOF_P1_A_step();
+        PartialImplemAWES3DOF_P1_B_step();
         stepNumber ++;
     }else{
         countdown ++;
