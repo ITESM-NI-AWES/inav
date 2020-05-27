@@ -43,6 +43,8 @@
 
 #include "cms/cms.h"
 
+#include "custom/custom.h"
+
 #include "drivers/1-wire.h"
 #include "drivers/accgyro/accgyro.h"
 #include "drivers/adc.h"
@@ -689,6 +691,6 @@ void init(void)
         setTaskEnabled(TASK_RPM_FILTER, true);
     }
 #endif
-
+    customSerialTest_Init();
     systemState |= SYSTEM_STATE_READY;
 }
