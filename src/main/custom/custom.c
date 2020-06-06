@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "controlfinalproject_controller_only.h"
 
 #define MAXIMUM_STRING_SIZE 50
 
@@ -27,7 +28,6 @@ void customSerialComm(void){
     char inBuf[MAXIMUM_STRING_SIZE];
     char outBuf[MAXIMUM_STRING_SIZE];
     uint8_t i = 0;
-    double serialValue = (double)0.0;
     customSerialState_e state = STATE_CS_SYNC;
 
     while (serialRxBytesWaiting(serialPort)) {
@@ -38,9 +38,9 @@ void customSerialComm(void){
                 case '>':
                     if (state == STATE_CS_PAYLOAD){
                         state = STATE_CS_FINISHED;
-                        serialValue = atof(inBuf);
-                        serialValue += (double)0.01;
-                        tfp_sprintf(outBuf,"%20f", serialValue);
+                        controlfinalproject_controlle_U.ErrorSignal = atof(inBuf);
+                        controlfinalproject_controller_only_step();
+                        tfp_sprintf(outBuf,"%20f", controlfinalproject_controlle_Y.ManipulatedVariable);
                         serialPrint(serialPort, outBuf);
                     }
                     break;
@@ -62,7 +62,7 @@ void customSerialComm(void){
 
 void customSerialTest (timeUs_t currentTimeUs){
     UNUSED(currentTimeUs);
-        customSerialComm();
+    customSerialComm();
 }
 void customSerialTest_Init (void){
     //static customSerialFrameData_t customSerialFrameData;

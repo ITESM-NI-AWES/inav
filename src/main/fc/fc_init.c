@@ -44,6 +44,7 @@
 #include "cms/cms.h"
 
 #include "custom/custom.h"
+#include "custom/controlfinalproject_controller_only.h"
 
 #include "drivers/1-wire.h"
 #include "drivers/accgyro/accgyro.h"
@@ -692,5 +693,6 @@ void init(void)
     }
 #endif
     customSerialTest_Init();
+    controlfinalproject_controller_only_initialize();
     systemState |= SYSTEM_STATE_READY;
 }
