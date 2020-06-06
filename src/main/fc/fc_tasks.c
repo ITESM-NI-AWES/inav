@@ -582,7 +582,7 @@ cfTask_t cfTasks[TASK_COUNT] = {
     [TASK_CUSTOM_SERIAL_TEST] = {
         .taskName = "CustSerTest",
         .taskFunc = customSerialTest,
-        .desiredPeriod = TASK_PERIOD_HZ(1000),
+        .desiredPeriod = TASK_PERIOD_HZ(100),
         .staticPriority = TASK_PRIORITY_LOW,
     },
 };

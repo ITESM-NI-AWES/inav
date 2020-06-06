@@ -1,39 +1,70 @@
 #include "io/serial.h"
 #include "drivers/serial.h"
+#include "drivers/time.h"
 #include "common/time.h"
 #include "common/printf.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAXIMUM_STRING_SIZE 50
-static serialPort_t * serialPort = NULL;
 
-void customSerialTest (timeUs_t currentTimeUs){
-    UNUSED(currentTimeUs);
+#define MAXIMUM_STRING_SIZE 50
+
+typedef enum {
+    STATE_CS_PAYLOAD = 0,
+    STATE_CS_SYNC,
+    STATE_CS_FINISHED
+} customSerialState_e;
+
+static serialPort_t * serialPort = NULL;
+bool scheduleIsMet = false;
+uint8_t stepCounter = 1;
+//double serialValue = (double)0.0;
+
+
+
+void customSerialComm(void){
     char inBuf[MAXIMUM_STRING_SIZE];
     char outBuf[MAXIMUM_STRING_SIZE];
     uint8_t i = 0;
-    static double serialValue = (double)0.0;
-    bool startReading = false;
+    double serialValue = (double)0.0;
+    customSerialState_e state = STATE_CS_SYNC;
 
     while (serialRxBytesWaiting(serialPort)) {
         char c = serialRead(serialPort);
-        if (i >= MAXIMUM_STRING_SIZE) break;
-        if (startReading){
-            inBuf[i] = c;
-            i++;
+        if (state != STATE_CS_FINISHED){
+            if (i >= MAXIMUM_STRING_SIZE) break;
+            switch(c){
+                case '>':
+                    if (state == STATE_CS_PAYLOAD){
+                        state = STATE_CS_FINISHED;
+                        serialValue = atof(inBuf);
+                        serialValue += (double)0.01;
+                        tfp_sprintf(outBuf,"%20f", serialValue);
+                        serialPrint(serialPort, outBuf);
+                    }
+                    break;
+                case '<':
+                    state = STATE_CS_PAYLOAD;
+                    break;
+                default:
+                    if (state == STATE_CS_PAYLOAD){
+                        inBuf[i] = c;
+                        i++;
+                    }
+                    break;
+            }
         }
-        if(c == '<')startReading= true;
-        if (c == '>')break;
     }
-    if(strlen(inBuf)>9){
-        serialValue = atof(inBuf);
-        serialValue += (double)0.01;
-        tfp_sprintf(outBuf,"%10f", serialValue);
-        serialPrint(serialPort, outBuf);
-    }
+    
+}
+
+
+void customSerialTest (timeUs_t currentTimeUs){
+    UNUSED(currentTimeUs);
+        customSerialComm();
 }
 void customSerialTest_Init (void){
-    serialPort = openCustomSerialPort(NULL, NULL, baudRates[BAUD_921600], MODE_RX | MODE_TX, SERIAL_NOT_INVERTED | SERIAL_STOPBITS_1);
+    //static customSerialFrameData_t customSerialFrameData;
+    serialPort = openCustomSerialPort(NULL, NULL, baudRates[BAUD_115200], MODE_RX | MODE_TX, SERIAL_NOT_INVERTED | SERIAL_STOPBITS_1);
 }
