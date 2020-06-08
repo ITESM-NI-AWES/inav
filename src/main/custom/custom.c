@@ -20,9 +20,7 @@ typedef enum {
 static serialPort_t * serialPort = NULL;
 bool scheduleIsMet = false;
 uint8_t stepCounter = 1;
-//double serialValue = (double)0.0;
-
-
+static volatile bool serialIsUsed = false;
 
 void customSerialComm(void){
     char inBuf[MAXIMUM_STRING_SIZE];
@@ -55,6 +53,7 @@ void customSerialComm(void){
                     break;
             }
         }
+        if (state == STATE_CS_FINISHED)break;
     }
     
 }
@@ -62,9 +61,15 @@ void customSerialComm(void){
 
 void customSerialTest (timeUs_t currentTimeUs){
     UNUSED(currentTimeUs);
-    customSerialComm();
+    
+    if (!serialIsUsed){
+        serialIsUsed = true;
+        customSerialComm();
+        serialIsUsed = false;
+    }
+    
 }
 void customSerialTest_Init (void){
     //static customSerialFrameData_t customSerialFrameData;
-    serialPort = openCustomSerialPort(NULL, NULL, baudRates[BAUD_115200], MODE_RX | MODE_TX, SERIAL_NOT_INVERTED | SERIAL_STOPBITS_1);
+    serialPort = openCustomSerialPort(NULL, NULL, baudRates[BAUD_921600], MODE_RX | MODE_TX, SERIAL_NOT_INVERTED | SERIAL_STOPBITS_1);
 }
